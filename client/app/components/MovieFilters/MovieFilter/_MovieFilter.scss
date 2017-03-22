@@ -1,0 +1,24 @@
+.movie-filter {
+  padding-right: 1.5rem;
+  position: relative;
+  .movie-filter__remove-filter {
+    right: -.4rem;
+    top: 1.5rem;
+  }
+
+  &.movie-filter--slider {
+    .movie-filter__remove-filter {
+      top: -1rem;
+    }
+  }
+
+  &.movie-filter--release-date {
+    .movie-filter__remove-filter {
+      top: -1rem;
+    }
+  }
+
+  .movie-filter__selected-filters {
+    margin-right: -1rem;
+  }
+}

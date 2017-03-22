@@ -1,0 +1,8 @@
+@import 'app/style/normalize';
+@import 'app/style/print';
+
+/** components **/
+@import 'app/components/MovieItem/MovieItem';
+@import 'app/components/MovieList/MovieList';
+@import 'app/components/MovieFilters/MovieFilters';
+@import 'app/components/MovieFilters/MovieFilter/MovieFilter';

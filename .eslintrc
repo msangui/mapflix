@@ -1,0 +1,7 @@
+{
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "spread": true,
+    "experimentalObjectRestSpread": true
+  }
+}
