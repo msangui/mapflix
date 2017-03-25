@@ -1,9 +1,13 @@
 const express = require('express');
+const compression = require('compression');
 const app = express();
 const config = require('config');
 const serveStatic = require('serve-static');
 const movies = require('./movies/routes');
 const people = require('./people/routes');
+
+// compression
+app.use(compression());
 
 app.use('/api/movies', movies);
 app.use('/api/people', people);

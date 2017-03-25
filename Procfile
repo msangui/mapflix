@@ -1,1 +1,1 @@
-web: node node_modules/gulp/bin/gulp build:dist
+web: NODE_ENV=production node server/index.js

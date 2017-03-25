@@ -11,14 +11,12 @@ const hub = new HubRegistry([conf.path.tasks('*.js')]);
 gulp.registry(hub);
 
 gulp.task('build', gulp.series(gulp.parallel('other', 'webpack:dist')));
-gulp.task('build:dist', gulp.series('webpack:dist', 'startServer'));
 gulp.task('test', gulp.series('karma:single-run'));
 gulp.task('test:auto', gulp.series('karma:auto-run'));
 gulp.task('serve', gulp.series('webpack:watch', 'watch', 'browsersync'));
 gulp.task('serve:dist', gulp.series('default', 'browsersync:dist'));
 gulp.task('default', gulp.series('clean', 'build'));
 gulp.task('watch', watch);
-gulp.task('startServer', startServer);
 
 
 function reloadBrowserSync(cb) {
@@ -29,9 +27,4 @@ function reloadBrowserSync(cb) {
 function watch(done) {
   gulp.watch(conf.path.tmp('index.html'), reloadBrowserSync);
   done();
-}
-
-function startServer() {
-  process.env.NODE_ENV = "production";
-  require('./server/index');
 }
