@@ -24,6 +24,7 @@
 
     .movie__front, .movie__back {
       backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
       width: 100%;
       position: absolute;
       top: 0;
