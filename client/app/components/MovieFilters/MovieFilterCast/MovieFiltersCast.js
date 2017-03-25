@@ -1,8 +1,9 @@
 import React, {PropTypes, Component} from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
-import _ from 'lodash';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
-
+import debounce from 'lodash/debounce';
+import deburr from 'lodash/deburr';
+import lowerCase from 'lodash/lowerCase';
 
 class MovieCastAutoComplete extends Component {
   static propTypes = {
@@ -16,7 +17,7 @@ class MovieCastAutoComplete extends Component {
     this.state = {
       searchText: ''
     };
-    this.debounceOnSearch = _.debounce((value, props) => {
+    this.debounceOnSearch = debounce((value, props) => {
       props.onSearch(value)
     }, 500);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
@@ -39,7 +40,7 @@ class MovieCastAutoComplete extends Component {
   }
 
   filter(searchText, key) {
-    return searchText !== '' && _.deburr(_.lowerCase(key)).indexOf(_.deburr(_.lowerCase(searchText))) !== -1;
+    return searchText !== '' && deburr(lowerCase(key)).indexOf(deburr(lowerCase(searchText))) !== -1;
   }
 
   render() {

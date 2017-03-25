@@ -1,7 +1,7 @@
 import React, {PropTypes, Component} from 'react';
 import MovieItem from '../MovieItem/MovieItem';
 import {GridList} from 'material-ui/GridList';
-import _ from 'lodash';
+import ceil from 'lodash/ceil';
 
 class MovieList extends Component {
 
@@ -36,7 +36,7 @@ class MovieList extends Component {
                  selected={index === selectedTileIndex}
                  selectTile={this.selectTile.bind(this, index)}/>
     ));
-    const cols = _.ceil((windowWidth / 188));
+    const cols = ceil((windowWidth / 188));
 
     return (
       <GridList

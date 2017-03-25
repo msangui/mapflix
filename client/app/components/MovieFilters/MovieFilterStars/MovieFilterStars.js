@@ -1,9 +1,9 @@
 import React, {Component, PropTypes} from 'react';
-import {grey600, yellow800} from 'material-ui/styles/colors';
+import {yellow800} from 'material-ui/styles/colors';
 import StarFullIcon from 'material-ui/svg-icons/toggle/star';
 import StarEmptyIcon from 'material-ui/svg-icons/toggle/star-border';
 import IconButton from 'material-ui/IconButton';
-import _ from 'lodash';
+import range from 'lodash/range';
 
 class MovieFilterStars extends Component {
 
@@ -29,7 +29,7 @@ class MovieFilterStars extends Component {
 
   render() {
     const {selected} = this.props;
-    const stars = _.range(1, 10).map((value) => {
+    const stars = range(1, 10).map((value) => {
       const icon = value <= selected ? (
         <StarFullIcon color={yellow800}/>
       ) : (

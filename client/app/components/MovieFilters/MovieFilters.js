@@ -7,7 +7,12 @@ import MovieFiltersCast from './MovieFilterCast/MovieFiltersCast';
 import MovieFilterAwards from './MovieFilterAwards/MovieFilterAwards';
 import MovieFilter from './MovieFilter/MovieFilter';
 import MovieFilterStars from './MovieFilterStars/MovieFilterStars';
-import _ from 'lodash';
+import without from 'lodash/without';
+import omit from 'lodash/omit';
+import find from 'lodash/find';
+import toNumber from 'lodash/toNumber';
+import isArray from 'lodash/isArray';
+import range from 'lodash/range';
 
 class MovieFilters extends Component {
   static propTypes = {
@@ -52,7 +57,7 @@ class MovieFilters extends Component {
     this.setState({
       filters: {
         ...filters,
-        [filter]: _.without(filters.cast, person._id)
+        [filter]: without(filters.cast, person._id)
       }
     });
   }
@@ -106,7 +111,7 @@ class MovieFilters extends Component {
 
   removeFilter(filter) {
     const {filters} = this.state;
-    this.setState({filters: _.omit(filters, filter)});
+    this.setState({filters: omit(filters, filter)});
   }
 
   removeFilterValue(filter, value) {
@@ -118,7 +123,7 @@ class MovieFilters extends Component {
     this.setState({
       filters: {
         ...filters,
-        [filter]: _.without(filters[filter], value)
+        [filter]: without(filters[filter], value)
       }
     });
   }
@@ -127,7 +132,7 @@ class MovieFilters extends Component {
     const {filters} = this.state;
     const checkedFilter = filters[filter];
 
-    return _.isArray(checkedFilter) ? !!checkedFilter.length : !!checkedFilter;
+    return isArray(checkedFilter) ? !!checkedFilter.length : !!checkedFilter;
   }
 
   applyFilters() {
@@ -154,13 +159,13 @@ class MovieFilters extends Component {
       <MenuItem value={country} primaryText={country} key={`country-${index}`}/>
     ));
 
-    const years = _.range((new Date()).getFullYear(), 1900).map(year => (
+    const years = range((new Date()).getFullYear(), 1900).map(year => (
       <MenuItem value={year} primaryText={year} key={`year-${year}`}/>
     ));
 
     // map out people names for chips
     const selectedPeople = (filters.cast || [])
-      .map(personId => Object.assign({}, _.find(peopleNames, {_id: personId}), {
+      .map(personId => Object.assign({}, find(peopleNames, {_id: personId}), {
         toString() {
           return this.name;
         }
@@ -195,7 +200,7 @@ class MovieFilters extends Component {
           onRemove={this.removeFilter.bind(this)}>
           <label>Rating - {filters.rating}</label>
           <MovieFilterStars selectRating={this.addFilter.bind(this, 'rating', null, null)}
-                            selected={_.toNumber(filters.rating)}/>
+                            selected={toNumber(filters.rating)}/>
         </MovieFilter>
         <MovieFilter
           className="movie-filter--slider"
@@ -205,7 +210,7 @@ class MovieFilters extends Component {
           <label>Runtime - {filters.runtime}</label>
           <Slider
             {...filterOptions.runtimeSlider}
-            value={_.toNumber(filters.runtime)}
+            value={toNumber(filters.runtime)}
             onChange={this.addFilter.bind(this, 'runtime', null)}
           />
         </MovieFilter>

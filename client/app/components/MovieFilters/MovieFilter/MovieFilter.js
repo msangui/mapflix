@@ -6,6 +6,9 @@ import Avatar from 'material-ui/Avatar';
 import _ from 'lodash';
 import classNames from 'classnames';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import isArray from 'lodash/isArray';
+import upperCase from 'lodash/upperCase';
+import first from 'lodash/first';
 
 class MovieFilter extends Component {
   static propTypes = {
@@ -31,10 +34,10 @@ class MovieFilter extends Component {
         position: 'absolute'
       },
     };
-    const chips = _.isArray(values) ? values.map((value, index) =>
+    const chips = isArray(values) ? values.map((value, index) =>
       (
         <Chip onRequestDelete={onRemove.bind(null, filterType, value)} style={styles.chip} key={`filter-chip-${filterType}-${index}`}>
-          <Avatar size={32}>{_.upperCase(_.first(filterType))}</Avatar>
+          <Avatar size={32}>{upperCase(first(filterType))}</Avatar>
           {value.toString()}
         </Chip>
       )

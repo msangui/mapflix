@@ -1,6 +1,5 @@
 import * as types from '../constants/ActionTypes';
 import movieApi from '../api/movieApi';
-import _ from 'lodash';
 
 export function getMovies(filters = {}, params = {}) {
   return {

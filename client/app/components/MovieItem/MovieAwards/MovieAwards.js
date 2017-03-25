@@ -2,12 +2,16 @@ import React, {PropTypes, Component} from 'react';
 import {grey800, amber700} from 'material-ui/styles/colors';
 import Dialog from 'material-ui/Dialog/Dialog';
 import {List, ListItem} from 'material-ui/List';
-import _ from 'lodash';
 import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
 import {Link} from 'react-router-dom';
 import MovieAwardIcon from '../MovieAwardIcon/MovieAwardIcon';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import orderBy from 'lodash/orderBy';
+import kebabCase from 'lodash/kebabCase';
+import take from 'lodash/take';
+import takeRight from 'lodash/takeRight';
+import ceil from 'lodash/ceil';
 
 class MovieAwards extends Component {
   static propTypes = {
@@ -50,21 +54,21 @@ class MovieAwards extends Component {
       }
     };
 
-    const awardThumbnails = _.orderBy(awards, ['eventType', 'winner'], ['asc', 'desc'])
+    const awardThumbnails = orderBy(awards, ['eventType', 'winner'], ['asc', 'desc'])
       .filter(award => award.eventType !== 'ev0000123')
       .map((award, index) => (
         <span title={award.name}
-              key={`award-${award.eventType}-${_.kebabCase(award.name)}-${index}`}>
+              key={`award-${award.eventType}-${kebabCase(award.name)}-${index}`}>
           <MovieAwardIcon color={award.winner ? amber700 : grey800}
                           size={50}
                           eventType={award.eventType} />
         </span>
       )).concat(
-        _.orderBy(awards, ['eventType', 'winner'], ['asc', 'desc'])
+        orderBy(awards, ['eventType', 'winner'], ['asc', 'desc'])
           .filter(award => award.eventType === 'ev0000123')
           .map((award, index) => (
             <span title={award.name}
-                  key={`award-${award.eventType}-${_.kebabCase(award.name)}-${index}`}>
+                  key={`award-${award.eventType}-${kebabCase(award.name)}-${index}`}>
               <MovieAwardIcon color={award.winner ? amber700 : grey800}
                           size={30}
                           eventType={award.eventType} />
@@ -72,7 +76,7 @@ class MovieAwards extends Component {
         ))
       );
 
-    const awardsElement = _.orderBy(awards, ['eventType', 'winner'], ['asc', 'desc']).map((award, index) => {
+    const awardsElement = orderBy(awards, ['eventType', 'winner'], ['asc', 'desc']).map((award, index) => {
       const icon = (
         <Avatar size={40} backgroundColor={award.winner ? amber700 : grey800} icon={(
           <MovieAwardIcon {...award} size={40} color="white"/>
@@ -87,7 +91,7 @@ class MovieAwards extends Component {
 
       return (
         <Link key={`award-item-${index}`}
-              to={`/?awards=${award.eventType},${award.winner ? 'winner' : 'nominated'},${_.kebabCase(award.name)}`}>
+              to={`/?awards=${award.eventType},${award.winner ? 'winner' : 'nominated'},${kebabCase(award.name)}`}>
           <ListItem title={award.name}
                     secondaryText={title}
                     disabled={true}
@@ -108,12 +112,12 @@ class MovieAwards extends Component {
           autoScrollBodyContent={true}>
           <Paper style={style.paper} zDepth={0}>
             <List>
-              {_.take(awardsElement, _.ceil(awardsElement.length / 2))}
+              {take(awardsElement, ceil(awardsElement.length / 2))}
             </List>
           </Paper>
           <Paper style={style.paper} zDepth={0}>
             <List>
-              {_.takeRight(awardsElement, awards.length - _.ceil(awardsElement.length / 2))}
+              {takeRight(awardsElement, awards.length - ceil(awardsElement.length / 2))}
             </List>
           </Paper>
         </Dialog>

@@ -11,6 +11,10 @@ import {grey800, yellow700} from 'material-ui/styles/colors';
 import ClearIcon from 'material-ui/svg-icons/content/clear';
 import IconButton from 'material-ui/IconButton';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import indexOf from 'lodash/indexOf';
+import words from 'lodash/words';
+import capitalize from 'lodash/capitalize';
+
 
 class MovieFilterAwards extends Component {
   static propTypes = {
@@ -32,12 +36,12 @@ class MovieFilterAwards extends Component {
 
   isSelected(eventType) {
     const {selectedAwards} = this.props;
-    return _.indexOf(selectedAwards, eventType) !== -1 || _.indexOf(selectedAwards, `${eventType},winner`) !== -1;
+    return indexOf(selectedAwards, eventType) !== -1 || indexOf(selectedAwards, `${eventType},winner`) !== -1;
   }
 
   isWinner(eventType) {
     const {selectedAwards} = this.props;
-    return _.indexOf(selectedAwards, `${eventType},winner`) !== -1;
+    return indexOf(selectedAwards, `${eventType},winner`) !== -1;
   }
 
   onCheck(eventType, event, isChecked) {
@@ -86,7 +90,7 @@ class MovieFilterAwards extends Component {
           )}/>
         );
 
-        const awardName = _.words(name).map(word => _.capitalize(word)).join(' ');
+        const awardName = words(name).map(word => capitalize(word)).join(' ');
         return (
           <ListItem
             key={`extra-filter-awards-${index}`}

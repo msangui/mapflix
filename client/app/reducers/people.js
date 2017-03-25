@@ -7,7 +7,8 @@ import {
   GET_PEOPLE_NAMES_FAIL,
   GET_MOVIES
 } from '../constants/ActionTypes';
-import _ from 'lodash';
+import uniq from 'lodash/uniq';
+import includes from 'lodash/includes';
 
 const initialState = {
   list: [],
@@ -30,7 +31,7 @@ export default function people(state = initialState, action) {
         return {
           ...state,
           list: action.data,
-          names: _.uniq(state.names.concat(action.data)),
+          names: uniq(state.names.concat(action.data)),
           loadingList: false
         }
       })(action, state);
@@ -68,7 +69,7 @@ export default function people(state = initialState, action) {
         const cast = action.filters.cast || [];
         return {
           ...state,
-          names: state.names.filter(person => _.includes(cast, person._id))
+          names: state.names.filter(person => includes(cast, person._id))
         }
       })(action, state);
     default:

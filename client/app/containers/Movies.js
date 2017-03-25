@@ -10,6 +10,7 @@ import * as MovieActions from '../actions/movieActions';
 import * as PeopleActions from '../actions/peopleActions';
 import Loader from '../components/Loader/Loader';
 import Drawer from 'material-ui/Drawer';
+import isEqual from 'lodash/isEqual';
 
 class Movies extends Component {
   static propTypes = {
@@ -46,7 +47,7 @@ class Movies extends Component {
     const {location} = history;
     const queryParams = parseQuery(location.search);
 
-    if (!_.isEqual(parseQueryFilters(location.search), filters) && !loadingMovies) {
+    if (!isEqual(parseQueryFilters(location.search), filters) && !loadingMovies) {
       this.fetchMovies(Object.assign({}, nextProps, {
         params: {
           ...nextProps.params,
@@ -56,7 +57,7 @@ class Movies extends Component {
       if (queryParams.refresh) {
         this.fetchPeopleNames();
       }
-    } else if (_.isEqual(parseQueryFilters(location.search), filters) && loadingMore && hasMore && !loadingMovies) { // increment page and fetch
+    } else if (isEqual(parseQueryFilters(location.search), filters) && loadingMore && hasMore && !loadingMovies) { // increment page and fetch
       this.fetchMovies(Object.assign({}, nextProps, {params: {
           ...params,
           page: params.page + 1

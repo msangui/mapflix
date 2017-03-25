@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes';
 import peopleApi from '../api/peopleApi';
-import _ from 'lodash';
+import isArray from 'lodash/isArray';
 import Promise from 'promise';
 
 export function getPeople(partial) {
@@ -11,7 +11,7 @@ export function getPeople(partial) {
 }
 
 export function getPeopleNames(cast) {
-  const promise = (cast && _.isArray(cast) && (cast || []).length) ?
+  const promise = (cast && isArray(cast) && (cast || []).length) ?
     peopleApi.getNames(cast) : Promise.resolve({data: []});
 
   return {
