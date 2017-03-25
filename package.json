@@ -90,7 +90,7 @@
     "serve:dist": "gulp serve:dist",
     "test": "gulp test",
     "test:auto": "gulp test:auto",
-    "start": "NODE_ENV=production node ./server/index.js"
+    "start": "gulp serve:dist"
   },
   "eslintConfig": {
     "root": true,
