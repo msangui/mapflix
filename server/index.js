@@ -10,6 +10,6 @@ app.use('/api/people', people);
 
 app.use(serveStatic(config.get('static.dirName')));
 
-app.listen(config.get('express.port'), () => {
-  console.log(`Listening to port ${config.get('express.port')}`)
+app.listen(process.env.PORT || config.get('express.port'), () => {
+  console.log(`Listening to port ${process.env.PORT || config.get('express.port')}`)
 });
