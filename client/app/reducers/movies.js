@@ -13,7 +13,9 @@ const initialState = {
   loadingMovies: false,
   loadingOptions: false,
   loadingMore: false,
-  filters: {},
+  filters: {
+    first: false
+  },
   options: {},
   params: {
     page: 1,

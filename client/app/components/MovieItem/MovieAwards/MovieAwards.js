@@ -91,6 +91,7 @@ class MovieAwards extends Component {
 
       return (
         <Link key={`award-item-${index}`}
+              onClick={this.closeDialog.bind(this)}
               to={`/?awards=${award.eventType},${award.winner ? 'winner' : 'nominated'},${kebabCase(award.name)}`}>
           <ListItem title={award.name}
                     secondaryText={title}

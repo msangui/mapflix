@@ -3,5 +3,4 @@ const config = require('config');
 
 const db = mongodb.connect(config.get('mongodb.url'));
 
-console.log(config.get('mongodb.url'))
 module.exports = db;
