@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const config = require('../conf/server.conf');
+const config = require('config');
 const serveStatic = require('serve-static');
 const movies = require('./movies/routes');
 const people = require('./people/routes');
@@ -8,6 +8,8 @@ const people = require('./people/routes');
 app.use('/api/movies', movies);
 app.use('/api/people', people);
 
-app.use(serveStatic('./client'));
+app.use(serveStatic(config.get('static.dirName')));
 
-app.listen(config.port, () => console.log(`Listening to port ${config.port}`));
+app.listen(config.get('express.port'), () => {
+  console.log(`Listening to port ${config.get('express.port')}`)
+});

@@ -1,6 +1,8 @@
 import React, {PropTypes, Component} from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
 import _ from 'lodash';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
+
 
 class MovieCastAutoComplete extends Component {
   static propTypes = {
@@ -17,6 +19,8 @@ class MovieCastAutoComplete extends Component {
     this.debounceOnSearch = _.debounce((value, props) => {
       props.onSearch(value)
     }, 500);
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+
   }
 
   onUpdateInput(value) {

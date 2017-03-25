@@ -1,14 +1,13 @@
 import React, {PropTypes, Component} from 'react';
-import {grey800, yellow700} from 'material-ui/styles/colors';
-import Oscar from '../../../style/svg/oscar';
-import Bafta from '../../../style/svg/bafta';
-import GoldenGlobe from '../../../style/svg/GoldenGlobe';
+import {grey800, amber700} from 'material-ui/styles/colors';
 import Dialog from 'material-ui/Dialog/Dialog';
 import {List, ListItem} from 'material-ui/List';
 import _ from 'lodash';
 import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
 import {Link} from 'react-router-dom';
+import MovieAwardIcon from '../MovieAwardIcon/MovieAwardIcon';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 class MovieAwards extends Component {
   static propTypes = {
@@ -21,6 +20,7 @@ class MovieAwards extends Component {
     this.state = {
       open: false
     };
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
   openDialog(event) {
@@ -50,73 +50,34 @@ class MovieAwards extends Component {
       }
     };
 
-    const oscars = _.orderBy(awards, ['eventType', 'winner'], ['asc', 'desc'])
-      .filter(award => award.eventType === 'ev0000003')
+    const awardThumbnails = _.orderBy(awards, ['eventType', 'winner'], ['asc', 'desc'])
+      .filter(award => award.eventType !== 'ev0000123')
       .map((award, index) => (
-        <span title={award.name} key={`award-${award.eventType}-${_.kebabCase(award.name)}`}>
-          <Oscar title={award.name}
-                 key={`oscar-winner-${index}`}
-                 viewBox="0 0 200 500"
-                 style={{width: 15, height: 50}}
-                 preserveAspectRatio="xMinYMin meet" color={award.winner ? yellow700 : grey800}/>
+        <span title={award.name}
+              key={`award-${award.eventType}-${_.kebabCase(award.name)}-${index}`}>
+          <MovieAwardIcon color={award.winner ? amber700 : grey800}
+                          size={50}
+                          eventType={award.eventType} />
         </span>
-      ));
-
-    const goldenGlobes = _.orderBy(awards, ['eventType', 'winner'], ['asc', 'desc'])
-      .filter(award => award.eventType === 'ev0000292')
-      .map((award, index) => (
-        <span title={award.name} key={`award-${award.eventType}-${_.kebabCase(award.name)}`}>
-          <GoldenGlobe key={`golden-globe-winner-${index}`}
-                       viewBox="0 0 200 500"
-                       style={{width: 19, height: 50}}
-                       preserveAspectRatio="xMinYMin meet" color={award.winner ? yellow700 : grey800}/>
+      )).concat(
+        _.orderBy(awards, ['eventType', 'winner'], ['asc', 'desc'])
+          .filter(award => award.eventType === 'ev0000123')
+          .map((award, index) => (
+            <span title={award.name}
+                  key={`award-${award.eventType}-${_.kebabCase(award.name)}-${index}`}>
+              <MovieAwardIcon color={award.winner ? amber700 : grey800}
+                          size={30}
+                          eventType={award.eventType} />
         </span>
-      ));
-
-
-    const baftas = _.orderBy(awards, ['eventType', 'winner'], ['asc', 'desc'])
-      .filter(award => award.eventType === 'ev0000123')
-      .map((award, index) => (
-        <span title={award.name} key={`award-${award.eventType}-${_.kebabCase(award.name)}`}>
-          <Bafta title={award.name}
-                 viewBox="0 120 500 500"
-                 style={{height: 50}}
-                 key={`bafta-winner-${index}`} color={award.winner ? yellow700 : grey800}/>
-        </span>
-      ));
+        ))
+      );
 
     const awardsElement = _.orderBy(awards, ['eventType', 'winner'], ['asc', 'desc']).map((award, index) => {
-      const icon = ((eventType, winner) => {
-          switch (eventType) {
-            case 'ev0000003':
-              return (
-                <Avatar size={50} backgroundColor={winner ? yellow700 : grey800} icon={(
-                  <Oscar key={`oscar-nominated-${index}`}
-                         viewBox="-30 -50 200 500"
-                         style={{width: 15, height: 50}}
-                         preserveAspectRatio="xMinYMin meet"/>
-                )} />
-              );
-            case 'ev0000292':
-              return (
-                <Avatar size={50} backgroundColor={winner ? yellow700 : grey800} icon={(
-                  <GoldenGlobe key={`golden-globe-nominated-${index}`}
-                               viewBox="0 -20 144 360"
-                               style={{width: 15, height: 50}}
-                               preserveAspectRatio="xMinYMin meet"/>
-                )} />
-              );
-            case 'ev0000123':
-              return (
-                <Avatar size={50} backgroundColor={winner ? yellow700 : grey800} icon={(
-                  <Bafta viewBox="0 -120 500 500"
-                         style={{height: 50}}
-                         preserveAspectRatio="xMinYMin meet"/>
-                )} />
-              )
-          }
-        }
-      )(award.eventType, award.winner);
+      const icon = (
+        <Avatar size={40} backgroundColor={award.winner ? amber700 : grey800} icon={(
+          <MovieAwardIcon {...award} size={40} color="white"/>
+        )} />
+      );
 
       const title = (
         <div style={style.award}>
@@ -126,7 +87,7 @@ class MovieAwards extends Component {
 
       return (
         <Link key={`award-item-${index}`}
-           to={`/?awards=${award.eventType},${award.winner ? 'winner' : 'nominated'},${_.kebabCase(award.name)}`}>
+              to={`/?awards=${award.eventType},${award.winner ? 'winner' : 'nominated'},${_.kebabCase(award.name)}`}>
           <ListItem title={award.name}
                     secondaryText={title}
                     disabled={true}
@@ -138,9 +99,7 @@ class MovieAwards extends Component {
 
     return (
       <div className="movie__awards" onClick={this.openDialog.bind(this)}>
-        {oscars}
-        {goldenGlobes}
-        {baftas}
+        {awardThumbnails}
         <Dialog
           title={`Awards - ${name}`}
           modal={false}

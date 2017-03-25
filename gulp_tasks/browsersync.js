@@ -12,8 +12,9 @@ const browserSyncDistConf = require('../conf/browsersync-dist.conf');
 browserSync.use(spa());
 
 gulp.task('nodemon', nodemonTask);
+gulp.task('serverDist', serverDistTask);
 gulp.task('browsersync', gulp.series('nodemon', browserSyncServe));
-gulp.task('browsersync:dist', browserSyncDist);
+gulp.task('browsersync:dist', gulp.series('serverDist', browserSyncDist));
 
 function browserSyncServe(done) {
   browserSync.init(browserSyncConf());
@@ -25,6 +26,10 @@ function browserSyncDist(done) {
   done();
 }
 
+function serverDistTask(done) {
+  require('../server/index');
+  done();
+}
 
 
 function nodemonTask(done) {

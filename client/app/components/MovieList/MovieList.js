@@ -15,6 +15,10 @@ class MovieList extends Component {
     this.state = {selectedTileIndex: null}
   }
 
+  shouldComponentUpdate(nextProps) {
+    return (nextProps.movies || []).reduce((prev, curr) => prev + curr._id, '') !== (this.props.movies || []).reduce((prev, curr) => prev + curr._id, '');
+  }
+
   selectTile(tileIndex) {
     this.setState({
       selectedTileIndex: tileIndex === this.state.selectedTileIndex ? null : tileIndex
@@ -27,7 +31,8 @@ class MovieList extends Component {
     const cellHeight = 260;
 
     const movieList = (movies || []).map((movie, index) => (
-      <MovieItem {...movie} cellHeight={cellHeight} key={movie._id}
+      <MovieItem {...movie} cellHeight={cellHeight}
+                 key={`${movie._id}-${index}`}
                  selected={index === selectedTileIndex}
                  selectTile={this.selectTile.bind(this, index)}/>
     ));

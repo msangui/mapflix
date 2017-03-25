@@ -5,6 +5,7 @@ import Chip from 'material-ui/Chip';
 import Avatar from 'material-ui/Avatar';
 import _ from 'lodash';
 import classNames from 'classnames';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 class MovieFilter extends Component {
   static propTypes = {
@@ -14,6 +15,11 @@ class MovieFilter extends Component {
     onRemove: PropTypes.func,
     selected: PropTypes.bool
   };
+
+  constructor(props) {
+    super(props);
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+  }
 
   render() {
     const {children, onRemove = () => {}, filterType, values, className, selected} = this.props;

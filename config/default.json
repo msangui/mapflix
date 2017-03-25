@@ -1,0 +1,17 @@
+{
+  "mongodb": {
+    "url": "mongodb://root:Superman1@ds141490.mlab.com:41490/mapflix",
+    "movieCollection": "movies",
+    "peopleCollection": "people",
+    "genresCollection": "genres",
+    "languagesCollection": "languages",
+    "countriesCollection": "countries"
+  },
+  "express": {
+    "port": 5000,
+    "host": "localhost"
+  },
+  "static": {
+    "dirName": "./client"
+  }
+}

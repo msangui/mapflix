@@ -31,7 +31,7 @@ class Header extends Component {
   render() {
     return (
       <AppBar title="MapFlix"
-              style={{backgroundColor: red700}}
+              style={{backgroundColor: red700, position: 'fixed'}}
               onLeftIconButtonTouchTap={this.onLeftIconButtonTouchTap.bind(this)}
               onRightIconButtonTouchTap={this.onRightIconButtonTouchTap.bind(this)}
               iconElementRight={<IconButton><FilterIcon /></IconButton>}

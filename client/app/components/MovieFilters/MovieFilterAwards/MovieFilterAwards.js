@@ -5,8 +5,12 @@ import Awards from '../../../constants/Awards';
 import {List, ListItem} from 'material-ui/List';
 import Toggle from 'material-ui/Toggle';
 import Checkbox from 'material-ui/Checkbox';
-import Chip from 'material-ui/Chip';
+import MovieAwardIcon from '../../MovieItem/MovieAwardIcon/MovieAwardIcon';
 import Avatar from 'material-ui/Avatar';
+import {grey800, yellow700} from 'material-ui/styles/colors';
+import ClearIcon from 'material-ui/svg-icons/content/clear';
+import IconButton from 'material-ui/IconButton';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 class MovieFilterAwards extends Component {
   static propTypes = {
@@ -15,6 +19,11 @@ class MovieFilterAwards extends Component {
     selectAward: PropTypes.func,
     toggleAward: PropTypes.func
   };
+
+  constructor(props) {
+    super(props);
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+  }
 
   onToggle(eventType) {
     const {toggleAward} = this.props;
@@ -33,7 +42,8 @@ class MovieFilterAwards extends Component {
 
   onCheck(eventType, event, isChecked) {
     const {selectAward, removeAward} = this.props;
-    return isChecked ? removeAward(eventType) : selectAward(eventType);
+    const award = this.isWinner(eventType) ? `${eventType},winner` : eventType;
+    return isChecked ? removeAward(award) : selectAward(eventType);
 
   }
 
@@ -55,6 +65,38 @@ class MovieFilterAwards extends Component {
       },
     };
 
+    const {selectedAwards = [], removeAward} = this.props;
+
+    const extraFilters = selectedAwards
+      .filter(selectedAward => selectedAward.split(',').length > 2)
+      .map((selectedAward, index) => {
+        const [eventType, nominatedStatus, name] = selectedAward.split(',');
+
+        const winner = nominatedStatus === 'winner';
+
+        const removeButton = (
+          <IconButton onClick={removeAward.bind(this, selectedAward)} style={{top: 7, right: -9}}>
+            <ClearIcon />
+          </IconButton>
+        );
+
+        const awardAvatar = (
+          <Avatar size={30} backgroundColor={winner ? yellow700 : grey800} icon={(
+            <MovieAwardIcon eventType={eventType} size={30} color="white"/>
+          )}/>
+        );
+
+        const awardName = _.words(name).map(word => _.capitalize(word)).join(' ');
+        return (
+          <ListItem
+            key={`extra-filter-awards-${index}`}
+            secondaryText={awardName}
+            innerDivStyle={{position: 'relative', padding: '20px 38px 16px 50px'}}
+            rightIconButton={removeButton}
+            leftAvatar={awardAvatar} />
+        );
+      });
+
     const awardsElement = Awards
       .map((award, index) => {
         const checked = this.isSelected(award.eventType);
@@ -73,6 +115,7 @@ class MovieFilterAwards extends Component {
         <List style={style.root}>
           <MenuItem primaryText="Award" secondaryText="Won" disabled={true} style={style.header}/>
           {awardsElement}
+          {extraFilters}
         </List>
       </div>
     );

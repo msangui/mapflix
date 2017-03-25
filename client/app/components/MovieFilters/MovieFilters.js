@@ -6,8 +6,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import MovieFiltersCast from './MovieFilterCast/MovieFiltersCast';
 import MovieFilterAwards from './MovieFilterAwards/MovieFilterAwards';
 import MovieFilter from './MovieFilter/MovieFilter';
+import MovieFilterStars from './MovieFilterStars/MovieFilterStars';
 import _ from 'lodash';
-import moment from 'moment';
 
 class MovieFilters extends Component {
   static propTypes = {
@@ -32,10 +32,7 @@ class MovieFilters extends Component {
         countries: [],
         cast: [],
         awards: []
-      }, {
-        ...props.filters,
-        awards: (props.filters.awards || []).filter(award => award.split(',').length < 3)
-      })
+      }, props.filters)
     };
   }
 
@@ -71,12 +68,12 @@ class MovieFilters extends Component {
     });
   }
 
-  removeAward(eventType) {
+  removeAward(award) {
     const {filters} = this.state;
     this.setState({
       filters: {
         ...filters,
-        awards: (filters.awards || []).filter(award => !(new RegExp(eventType).test(award)))
+        awards: (filters.awards || []).filter(filterAward => filterAward !== award)
       }
     });
   }
@@ -87,8 +84,8 @@ class MovieFilters extends Component {
       filters: {
         ...filters,
         awards: (filters.awards || []).map(award => {
-          const [awardEventType, winner] = award.split(',');
-          if (awardEventType !== eventType) {
+          const [awardEventType, winner, awardName] = award.split(',');
+          if (awardEventType !== eventType || awardName) {
             return award;
           }
           return winner === 'winner' ? awardEventType : `${awardEventType},winner`;
@@ -157,7 +154,7 @@ class MovieFilters extends Component {
       <MenuItem value={country} primaryText={country} key={`country-${index}`}/>
     ));
 
-    const years = _.range(moment().format('YYYY'), 1900).map(year => (
+    const years = _.range((new Date()).getFullYear(), 1900).map(year => (
       <MenuItem value={year} primaryText={year} key={`year-${year}`}/>
     ));
 
@@ -197,11 +194,8 @@ class MovieFilters extends Component {
           selected={this.isFilterSelected.bind(this)('rating')}
           onRemove={this.removeFilter.bind(this)}>
           <label>Rating - {filters.rating}</label>
-          <Slider
-            {...filterOptions.ratingSlider}
-            value={_.toNumber(filters.rating)}
-            onChange={this.addFilter.bind(this, 'rating', null)}
-          />
+          <MovieFilterStars selectRating={this.addFilter.bind(this, 'rating', null, null)}
+                            selected={_.toNumber(filters.rating)}/>
         </MovieFilter>
         <MovieFilter
           className="movie-filter--slider"
@@ -221,7 +215,7 @@ class MovieFilters extends Component {
           <SelectField
             {...filterOptions.selectField}
             floatingLabelText="Release Year"
-            value={_.toNumber(filters.releaseYear)}
+            value={filters.releaseYear}
             maxHeight={200}
             onChange={this.addFilter.bind(this, 'releaseYear')}>
             {years}

@@ -8,7 +8,7 @@ import MovieFilters from '../components/MovieFilters/MovieFilters';
 import {parseQueryFilters, parseQuery} from '../utils/utils';
 import * as MovieActions from '../actions/movieActions';
 import * as PeopleActions from '../actions/peopleActions';
-import LinearProgress from 'material-ui/LinearProgress';
+import Loader from '../components/Loader/Loader';
 import Drawer from 'material-ui/Drawer';
 
 class Movies extends Component {
@@ -56,7 +56,7 @@ class Movies extends Component {
       if (queryParams.refresh) {
         this.fetchPeopleNames();
       }
-    } else if (_.isEqual(parseQueryFilters(location.search), filters) && loadingMore && hasMore) { // increment page and fetch
+    } else if (_.isEqual(parseQueryFilters(location.search), filters) && loadingMore && hasMore && !loadingMovies) { // increment page and fetch
       this.fetchMovies(Object.assign({}, nextProps, {params: {
           ...params,
           page: params.page + 1
@@ -101,13 +101,12 @@ class Movies extends Component {
   render() {
     const {movies, filters, options, loadingOptions, loadingMore, loadingMovies, people, peopleNames, loadingNames, windowWidth} = this.props;
 
-    const loader = (loadingMovies || loadingMore) ?
+    const loader = (loadingMore || loadingMovies) ?
       (
         <div className="app-loader">
-          <LinearProgress mode="indeterminate" />
+          <Loader loading={true}/>
         </div>
       ) : null;
-
 
     const filtersElement = this.state.drawerOpen && !loadingOptions ?
       (<MovieFilters people={people}

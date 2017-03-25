@@ -1,5 +1,5 @@
 const conf = require('./gulp.conf');
-const serverConf = require('./server.conf');
+const config = require('config');
 const url = require('url');
 const webpack = require('webpack');
 const proxyMiddleware = require('http-proxy-middleware');
@@ -7,7 +7,7 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 
 const proxy = proxyMiddleware('/api', {
-  target: `http://${serverConf.host}:${serverConf.port}/`,
+  target: `http://${config.get('express.host')}:${config.get('express.port')}/`,
   changeOrigin: true
 });
 

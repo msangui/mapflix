@@ -1,6 +1,7 @@
 const mongodb = require('./mongodb');
-const config = require('../config');
+const config = require('config');
 
-const db = mongodb.connect(config.mongodb.url);
+const db = mongodb.connect(config.get('mongodb.url'));
 
+console.log(config.get('mongodb.url'))
 module.exports = db;

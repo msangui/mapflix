@@ -46,7 +46,7 @@ class App extends Component {
       <MuiThemeProvider muitheme={getMuiTheme(darkBaseTheme)}>
         <div className="container">
           <Header onLeftIconButtonTouchTap={this.props.onLeftIconButtonTouchTap} onRightIconButtonTouchTap={this.props.onRightIconButtonTouchTap}/>
-          <article className="content">
+          <article className="content" style={{paddingTop: 64}}>
             {this.props.children}
           </article>
         </div>

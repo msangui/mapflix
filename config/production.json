@@ -1,0 +1,8 @@
+{
+  "mongodb": {
+    "url": "mongodb://read:Reader1@ds141490.mlab.com:41490/mapflix"
+  },
+  "static": {
+    "dirName": "./dist"
+  }
+}

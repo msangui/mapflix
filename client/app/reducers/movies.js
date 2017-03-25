@@ -18,7 +18,8 @@ const initialState = {
   params: {
     page: 1,
     limit: 50
-  }
+  },
+  hasMore: true
 };
 
 export default function movies(state = initialState, action) {
@@ -28,19 +29,19 @@ export default function movies(state = initialState, action) {
         return {
           ...state,
           loadingMovies: true,
-          loadingMore: false,
           filters: action.filters || {},
+          params: action.params,
           hasMore: true
         }
       })(action, state);
     case GET_MOVIES_SUCCESS:
       return ((action, state) => {
-        const list = state.params.page === action.params.page ? action.data : state.list.concat(action.data);
+        const list = state.loadingMore ? state.list.concat(action.data) : action.data;
         return {
           ...state,
           list,
           loadingMovies: false,
-          params: action.params,
+          loadingMore: false,
           hasMore: action.data.length === state.params.limit
         }
       })(action, state);
@@ -76,7 +77,7 @@ export default function movies(state = initialState, action) {
       })(action, state);
     case SCROLLED_BOTTOM:
       return ((action, state) => {
-        if (state.loadingMore || state.loadingMovies) {
+        if (state.loadingMore || state.loadingMovies || !state.hasMore) {
           return state;
         }
 

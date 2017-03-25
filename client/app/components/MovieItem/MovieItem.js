@@ -2,14 +2,17 @@ import React, {PropTypes, Component} from 'react';
 import {GridTile} from 'material-ui/GridList';
 import StarIcon from 'material-ui/svg-icons/toggle/star';
 import classNames from 'classnames';
-import {grey400, grey200, grey600, grey800, yellow700, yellow500} from 'material-ui/styles/colors';
+import {grey400, grey200, grey600, grey800, amber700, grey50, yellow500} from 'material-ui/styles/colors';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import {List, ListItem} from 'material-ui/List';
 import moment from 'moment';
 import Toggle from 'material-ui/Toggle';
 import {Link} from 'react-router-dom';
-
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 import MovieAwards from './MovieAwards/MovieAwards';
+import MovieAwardIcon from '../MovieItem/MovieAwardIcon/MovieAwardIcon';
+import Chip from 'material-ui/Chip';
+import {convertHex} from '../../utils/utils';
 
 class MovieItem extends Component {
   static propTypes = {
@@ -23,7 +26,7 @@ class MovieItem extends Component {
     genres: PropTypes.array,
     languages: PropTypes.array,
     rating: PropTypes.object,
-    releaseDate: PropTypes.object,
+    releaseDate: PropTypes.string,
     rows: PropTypes.number,
     selectTile: PropTypes.func,
     stars: PropTypes.array
@@ -35,6 +38,7 @@ class MovieItem extends Component {
       more: false,
       open: false
     };
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
   toggle() {
@@ -51,7 +55,7 @@ class MovieItem extends Component {
   }
 
   render() {
-    const {_id, genres, stars, rating, name, image, cols = 1, rows = 1, releaseDate, runtime, cast = [], languages, awards = [], cellHeight} = this.props;
+    const {genres, stars, rating, name, image, cols = 1, rows = 1, releaseDate, runtime, cast = [], languages, awards = []} = this.props;
     const {more, open} = this.state;
 
     const title = !open ? (
@@ -182,6 +186,7 @@ class MovieItem extends Component {
       <span>
         <Toggle
           className="movie__toggle"
+          toggled={more}
           onClick={this.toggleMore.bind(this)}
           thumbStyle={style.thumbOff}
           trackStyle={style.trackOff}
@@ -204,9 +209,23 @@ class MovieItem extends Component {
       </span>
     ) : null;
 
+    const awardBadge = (<Chip style={{borderRadius: 10, position: 'absolute', top: 5, left: 3}}
+                              backgroundColor={convertHex(grey50, 40)}
+                              labelStyle={{lineHeight: '12px'}}>
+      {
+        _.uniqBy(_.uniqBy(awards, 'eventType')
+          .map(award => (
+            <MovieAwardIcon size={30}
+                            eventType={award.eventType}
+                            color={_.find(awards, {
+                              eventType: award.eventType, winner: true
+                            }) ? amber700 : grey800} />
+          )))
+      }
+    </Chip>);
+
     return (
       <GridTile className="movie"
-                key={_id}
                 cols={cols}
                 title={animatedTitle}
                 rows={rows}
@@ -215,6 +234,7 @@ class MovieItem extends Component {
 
         <div className={classNames('movie--flipper', {'movie--active': open})} title={name}>
           <div className="movie__front">
+            {awardBadge}
             <img src={image}/>
           </div>
           <div className="movie__back" style={style.back}>

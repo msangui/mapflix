@@ -22,7 +22,7 @@ const getMovieId = ($, element) => {
 const crawlMovieList = (page = 1) => {
   return new Promise((resolve, reject) => {
     movieCrawler.queue({
-      uri: IMDB.LIST_URL(page),
+      uri: IMDB.LIST_URL(page, 2500),
       // The global callback won't be called
       callback: (err, res, done) => {
         if (err) {

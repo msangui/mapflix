@@ -1,6 +1,6 @@
 const db = require('../core/db');
 const mongodb = require('../core/mongodb');
-const config = require('../config');
+const config = require('config');
 const _ = require('lodash');
 const Promise = require('promise');
 
@@ -15,6 +15,7 @@ const defaultProjection = {
   color: true,
   image: true,
   description: true,
+  releaseDate: true,
   cast: {
     $elemMatch: {
       role: 'director'
@@ -34,7 +35,7 @@ const queryMovies = (query = {}, options) => {
     const projection = Object.assign({}, defaultProjection, options.projection || {});
 
 
-    return mongodb.findDocuments(db, config.mongodb.movieCollection, query, limit, skip, {[sortBy]: sortDirection}, projection);
+    return mongodb.findDocuments(db, config.get('mongodb.movieCollection'), query, limit, skip, {[sortBy]: sortDirection}, projection);
   })
 };
 
@@ -120,9 +121,9 @@ const buildQuery = (filters = {}) => {
 const movieOptions = () => {
   return db.then(db => {
     return Promise.all([
-      mongodb.findDocuments(db, config.mongodb.genresCollection, {}),
-      mongodb.findDocuments(db, config.mongodb.languagesCollection, {}),
-      mongodb.findDocuments(db, config.mongodb.countriesCollection, {})
+      mongodb.findDocuments(db, config.get('mongodb.genresCollection'), {}),
+      mongodb.findDocuments(db, config.get('mongodb.languagesCollection'), {}),
+      mongodb.findDocuments(db, config.get('mongodb.countriesCollection'), {})
     ]).then(([genres, languages, countries]) => {
 
       return {
