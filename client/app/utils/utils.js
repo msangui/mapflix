@@ -1,5 +1,7 @@
 import qs from 'qs';
 import isArray from 'lodash/isArray';
+import toNumber from 'lodash/toNumber';
+import round from 'lodash/round';
 
 const validFilters = ['rating', 'genres', 'countries', 'languages', 'releaseYear', 'runtime', 'cast', 'awards'];
 const filtersMultiple = ['genres', 'countries', 'languages', 'cast', 'awards'];
@@ -29,3 +31,18 @@ export const convertHex = (hex, opacity) => {
 
   return `rgba(${r}, ${g}, ${b}, ${opacity/100})`;
 };
+
+export const displayTime = (timeInMinutes) => {
+  const time = ((timeInMinutes / 60) + '').split('.');
+  let minutes = '';
+  let hours = '0';
+
+  if (time[0] !== '0') {
+    hours = `${time[0]}h `;
+  }
+  if (time.length > 1) {
+    minutes = `${round(toNumber('0.' + time[1])*60)}m`;
+  }
+
+  return `${hours}${minutes}`;
+}

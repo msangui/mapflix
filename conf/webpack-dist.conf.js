@@ -5,7 +5,6 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FailPlugin = require('webpack-fail-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const pkg = require('../package.json');
 const autoprefixer = require('autoprefixer');
 
 module.exports = {
@@ -51,7 +50,10 @@ module.exports = {
     }),
     new webpack.optimize.UglifyJsPlugin({
       output: {comments: false},
-      compress: {unused: true, dead_code: true, warnings: false} // eslint-disable-line camelcase
+      compress: {unused: true, dead_code: true, warnings: false} ,
+      sourceMap: false,
+      screw_ie8: true,
+      mangle: true
     }),
     new ExtractTextPlugin('index-[contenthash].css'),
     new webpack.optimize.CommonsChunkPlugin({name: 'vendor'}),
@@ -69,6 +71,6 @@ module.exports = {
   },
   entry: {
     app: `./${conf.path.src('index')}`,
-    vendor: ['react', 'moment', 'lodash', 'qs', 'redux', 'react-router', 'react-router-redux', 'history', 'react-dom', 'material-ui', 'react-redux']
+    vendor: ['react', 'lodash', 'qs', 'redux', 'react-router', 'react-router-redux', 'history', 'react-dom', 'material-ui', 'react-redux']
   }
 };

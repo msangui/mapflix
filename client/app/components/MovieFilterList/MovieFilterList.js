@@ -1,6 +1,5 @@
 import React, {PropTypes, Component} from 'react';
 import SelectField from 'material-ui/SelectField';
-import Slider from 'material-ui/Slider';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import MovieFiltersCast from '../MovieFilterCast/MovieFiltersCast';
@@ -13,6 +12,8 @@ import find from 'lodash/find';
 import toNumber from 'lodash/toNumber';
 import isArray from 'lodash/isArray';
 import range from 'lodash/range';
+import {displayTime} from '../../utils/utils';
+
 
 class MovieFilterList extends Component {
   static propTypes = {
@@ -27,16 +28,6 @@ class MovieFilterList extends Component {
   };
 
   static filterOptions = {
-    ratingSlider: {
-      min: 1,
-      max: 9,
-      step: 1
-    },
-    runtimeSlider: {
-      min: 0,
-      max: 300,
-      step: 25
-    },
     selectField: {
       fullWidth: true
     }
@@ -191,6 +182,11 @@ class MovieFilterList extends Component {
       <MenuItem value={year} primaryText={year} key={`year-${year}`}/>
     ));
 
+    const runtime = range(0, 360, 30).map(value => (
+      <MenuItem value={value} primaryText={displayTime(value)} key={`runtime-${value}`}/>
+    ));
+
+
     // map out people names for chips
     const selectedPeople = (filters.cast || [])
       .map(personId => Object.assign({}, find(peopleNames, {_id: personId}), {
@@ -214,17 +210,17 @@ class MovieFilterList extends Component {
           <MovieFilterStars selectRating={this.addFilter.bind(this, 'rating', null, null)}
                             selected={toNumber(filters.rating)}/>
         </MovieFilter>
-        <MovieFilter
-          className="movie-filter--slider"
-          filterType="runtime"
-          selected={this.isFilterSelected.bind(this)('runtime')}
-          onRemove={this.removeFilter.bind(this)}>
-          <label>Runtime - {filters.runtime}</label>
-          <Slider
-            {...MovieFilterList.filterOptions.runtimeSlider}
-            value={toNumber(filters.runtime)}
-            onChange={this.addFilter.bind(this, 'runtime', null)}
-          />
+        <MovieFilter filterType="runtime"
+                     selected={this.isFilterSelected.bind(this)('runtime')}
+                     onRemove={this.removeFilter.bind(this)}>
+          <SelectField
+            {...MovieFilterList.filterOptions.selectField}
+            floatingLabelText="Runtime"
+            value={toNumber(filters.runtime || 0)}
+            maxHeight={200}
+            onChange={this.addFilter.bind(this, 'runtime')}>
+            {runtime}
+          </SelectField>
         </MovieFilter>
         <MovieFilter filterType="releaseYear"
                      selected={this.isFilterSelected.bind(this)('releaseYear')}

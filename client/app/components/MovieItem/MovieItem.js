@@ -5,14 +5,13 @@ import classNames from 'classnames';
 import {grey400, grey200, grey600, grey800, amber700, grey50, yellow500} from 'material-ui/styles/colors';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import {List, ListItem} from 'material-ui/List';
-import moment from 'moment';
 import Toggle from 'material-ui/Toggle';
 import {Link} from 'react-router-dom';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import MovieAwards from '../MovieAwards/MovieAwards';
 import MovieAwardIcon from '../MovieAwardIcon/MovieAwardIcon';
 import Chip from 'material-ui/Chip';
-import {convertHex} from '../../utils/utils';
+import {convertHex, displayTime} from '../../utils/utils';
 
 class MovieItem extends Component {
   static propTypes = {
@@ -57,6 +56,9 @@ class MovieItem extends Component {
   render() {
     const {_id, genres, stars, rating, name, image, cols = 1, rows = 1, releaseDate, runtime, cast = [], languages, awards = []} = this.props;
     const {more, open} = this.state;
+
+    const releaseDateObject = new Date(releaseDate || Date.now());
+    const releaseDateString = releaseDateObject.toISOString().split('T')[0];
 
     const title = !open ? (
       <div className="movie__title">
@@ -153,8 +155,8 @@ class MovieItem extends Component {
           innerDivStyle={style.listItem}
           primaryText="Release date"
           secondaryText={(
-            <span key={`release-date-${moment(releaseDate).format('YYYY')}`}>
-                <Link to={`/?refresh=true&releaseYear=${moment(releaseDate).format('YYYY')}`}>{moment(releaseDate).format('YYYY-MM-DD')}</Link>
+            <span key={`release-date-${releaseDateObject.getFullYear()}`}>
+                <Link to={`/?refresh=true&releaseYear=${releaseDateObject.getFullYear()}`}>{releaseDateString}</Link>
               </span>
           )}
           secondaryTextLines={1}
@@ -167,7 +169,7 @@ class MovieItem extends Component {
         <ListItem
           innerDivStyle={style.listItem}
           primaryText="Runtime"
-          secondaryText={runtime}
+          secondaryText={displayTime(runtime)}
           secondaryTextLines={1}
           disabled={true}
         />

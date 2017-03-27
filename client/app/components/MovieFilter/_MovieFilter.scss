@@ -21,4 +21,8 @@
   .movie-filter__selected-filters {
     margin-right: -1rem;
   }
+  .movie-filter-chip {
+    width: -webkit-fit-content !important;
+    width: fit-content !important;
+  }
 }

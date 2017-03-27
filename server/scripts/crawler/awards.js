@@ -1,7 +1,5 @@
 const Crawler = require('crawler');
-const url = require('url');
 const _ = require('lodash')
-const moment = require('moment');
 const Promise = require('promise');
 const IMDB = require('../../constants').IMDB;
 

@@ -62,10 +62,7 @@ class MovieFilterAwards extends Component {
       },
       item: {
         padding: 0
-      },
-      chip: {
-        margin: 4,
-      },
+      }
     };
 
     const {selectedAwards = [], removeAward} = this.props;

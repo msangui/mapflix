@@ -28,7 +28,7 @@ class MovieFilter extends Component {
     const {children, onRemove = () => {}, filterType, values, className, selected} = this.props;
     const styles = {
       chip: {
-        margin: 4,
+        margin: 4
       },
       removeButton: {
         position: 'absolute'
@@ -36,7 +36,10 @@ class MovieFilter extends Component {
     };
     const chips = isArray(values) ? values.map((value, index) =>
       (
-        <Chip onRequestDelete={onRemove.bind(null, filterType, value)} style={styles.chip} key={`filter-chip-${filterType}-${index}`}>
+        <Chip className="movie-filter-chip"
+              onRequestDelete={onRemove.bind(null, filterType, value)}
+              style={styles.chip}
+              key={`filter-chip-${filterType}-${index}`}>
           <Avatar size={32}>{upperCase(first(filterType))}</Avatar>
           {value.toString()}
         </Chip>
