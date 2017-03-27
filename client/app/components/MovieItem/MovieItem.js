@@ -12,6 +12,7 @@ import MovieAwards from '../MovieAwards/MovieAwards';
 import MovieAwardIcon from '../MovieAwardIcon/MovieAwardIcon';
 import Chip from 'material-ui/Chip';
 import {convertHex, displayTime} from '../../utils/utils';
+import LazyImage from '../LazyImage/LazyImage';
 
 class MovieItem extends Component {
   static propTypes = {
@@ -238,7 +239,7 @@ class MovieItem extends Component {
         <div className={classNames('movie--flipper', {'movie--active': open})} title={name}>
           <div className="movie__front">
             {awardBadge}
-            <img src={image}/>
+            <LazyImage src={image}/>
           </div>
           <div className="movie__back" style={style.back}>
             {movieDetails}
