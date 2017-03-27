@@ -1,7 +1,9 @@
 import React, {PropTypes, Component} from 'react';
 import MovieItem from '../MovieItem/MovieItem';
 import {GridList} from 'material-ui/GridList';
-import ceil from 'lodash/ceil';
+import round from 'lodash/round';
+import once from 'lodash/once';
+
 
 class MovieList extends Component {
 
@@ -12,7 +14,7 @@ class MovieList extends Component {
 
   constructor() {
     super();
-    this.state = {selectedTileIndex: null}
+    this.state = {selectedTileIndex: null};
   }
 
   shouldComponentUpdate(nextProps) {
@@ -36,7 +38,7 @@ class MovieList extends Component {
                  selected={index === selectedTileIndex}
                  selectTile={this.selectTile.bind(this, index)}/>
     ));
-    const cols = ceil((windowWidth / 188));
+    const cols = round((windowWidth / 188));
 
     return (
       <GridList

@@ -26,8 +26,8 @@ module.exports = {
         loaders: [
           'style-loader',
           'css-loader',
-          'sass-loader',
-          'postcss-loader'
+          'postcss-loader',
+          'sass-loader'
         ]
       },
       {
@@ -50,7 +50,9 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.LoaderOptionsPlugin({
       options: {
-        postcss: () => [autoprefixer]
+        postcss: () => [autoprefixer({
+          browsers: ['last 2 versions', 'iOS 7']
+        })]
       },
       debug: true
     })
@@ -64,6 +66,6 @@ module.exports = {
   entry: [
     'webpack/hot/dev-server',
     'webpack-hot-middleware/client',
-    `./${conf.path.src('index')}`
+      `./${conf.path.src('index')}`
   ]
 };

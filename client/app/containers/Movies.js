@@ -1,10 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import _ from 'lodash';
 import qs from 'qs';
 import App from './App';
 import MovieList from '../components/MovieList/MovieList';
-import MovieFilters from '../components/MovieFilters/MovieFilters';
+import MovieFilterList from '../components/MovieFilterList/MovieFilterList';
 import {parseQueryFilters, parseQuery} from '../utils/utils';
 import * as MovieActions from '../actions/movieActions';
 import * as PeopleActions from '../actions/peopleActions';
@@ -110,13 +109,13 @@ class Movies extends Component {
       ) : null;
 
     const filtersElement = this.state.drawerOpen && !loadingOptions ?
-      (<MovieFilters people={people}
-                     onInitPeople={this.fetchPeopleNames.bind(this)}
-                     onPeopleSearch={this.fetchPeople.bind(this)}
-                     filters={filters} options={options}
-                     peopleNames={peopleNames}
-                     loadingNames={loadingNames}
-                     onApplyFilters={this.applyFilters.bind(this)}/>) : null;
+      (<MovieFilterList people={people}
+                        onInitPeople={this.fetchPeopleNames.bind(this)}
+                        onPeopleSearch={this.fetchPeople.bind(this)}
+                        filters={filters} options={options}
+                        peopleNames={peopleNames}
+                        loadingNames={loadingNames}
+                        onApplyFilters={this.applyFilters.bind(this)}/>) : null;
 
     return (
       <App onRightIconButtonTouchTap={this.handleDrawerToggle.bind(this)}>

@@ -1,7 +1,7 @@
 import React, {PropTypes, Component} from 'react';
-import Oscar from '../../SvgIcons/oscar';
-import Bafta from '../../SvgIcons/bafta';
-import GoldenGlobe from '../../SvgIcons/GoldenGlobe';
+import Oscar from '../SvgIcons/oscar';
+import Bafta from '../SvgIcons/bafta';
+import GoldenGlobe from '../SvgIcons/GoldenGlobe';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 class MovieAwardIcon extends Component {

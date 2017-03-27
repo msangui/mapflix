@@ -3,10 +3,10 @@ import SelectField from 'material-ui/SelectField';
 import Slider from 'material-ui/Slider';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
-import MovieFiltersCast from './MovieFilterCast/MovieFiltersCast';
-import MovieFilterAwards from './MovieFilterAwards/MovieFilterAwards';
-import MovieFilter from './MovieFilter/MovieFilter';
-import MovieFilterStars from './MovieFilterStars/MovieFilterStars';
+import MovieFiltersCast from '../MovieFilterCast/MovieFiltersCast';
+import MovieFilterAwards from '../MovieFilterAwards/MovieFilterAwards';
+import MovieFilter from '../MovieFilter/MovieFilter';
+import MovieFilterStars from '../MovieFilterStars/MovieFilterStars';
 import without from 'lodash/without';
 import omit from 'lodash/omit';
 import find from 'lodash/find';
@@ -14,7 +14,7 @@ import toNumber from 'lodash/toNumber';
 import isArray from 'lodash/isArray';
 import range from 'lodash/range';
 
-class MovieFilters extends Component {
+class MovieFilterList extends Component {
   static propTypes = {
     filters: PropTypes.object,
     loadingNames: PropTypes.bool,
@@ -24,6 +24,34 @@ class MovieFilters extends Component {
     options: PropTypes.object,
     people: PropTypes.array,
     peopleNames: PropTypes.array
+  };
+
+  static filterOptions = {
+    ratingSlider: {
+      min: 1,
+      max: 9,
+      step: 1
+    },
+    runtimeSlider: {
+      min: 0,
+      max: 300,
+      step: 25
+    },
+    selectField: {
+      fullWidth: true
+    }
+  };
+
+  static styles = {
+    root: {
+      padding: '1.5rem 0 2.5rem 1rem',
+      overflowX: 'hidden'
+    },
+    applyButton: {
+      marginTop: 15,
+      marginBottom: 15,
+      paddingRight: '1rem'
+    }
   };
 
   constructor(props) {
@@ -147,15 +175,15 @@ class MovieFilters extends Component {
 
 
     // filters
-    const genres = (options.genres || []).map((genre, index) => (
+    const genres = (options.genres || []).sort().map((genre, index) => (
       <MenuItem value={genre} primaryText={genre} key={`genre-${index}`}/>
     ));
 
-    const languages = (options.languages || []).map((language, index) => (
+    const languages = (options.languages || []).sort().map((language, index) => (
       <MenuItem value={language} primaryText={language} key={`language-${index}`}/>
     ));
 
-    const countries = (options.countries || []).map((country, index) => (
+    const countries = (options.countries || []).sort().map((country, index) => (
       <MenuItem value={country} primaryText={country} key={`country-${index}`}/>
     ));
 
@@ -171,28 +199,12 @@ class MovieFilters extends Component {
         }
       }));
 
-    const filterOptions =  {
-      ratingSlider: {
-        min: 1,
-        max: 9,
-        step: 1
-      },
-      runtimeSlider: {
-        min: 0,
-        max: 300,
-        step: 25
-      },
-      selectField: {
-        fullWidth: true
-      }
-    };
-
     if (loadingNames) {
       return null;
     }
 
     return (
-      <div className="movie-filters">
+      <div className="movie-filter-list" style={MovieFilterList.styles.root}>
         <MovieFilter
           className="movie-filter--slider"
           filterType="rating"
@@ -209,7 +221,7 @@ class MovieFilters extends Component {
           onRemove={this.removeFilter.bind(this)}>
           <label>Runtime - {filters.runtime}</label>
           <Slider
-            {...filterOptions.runtimeSlider}
+            {...MovieFilterList.filterOptions.runtimeSlider}
             value={toNumber(filters.runtime)}
             onChange={this.addFilter.bind(this, 'runtime', null)}
           />
@@ -218,7 +230,7 @@ class MovieFilters extends Component {
                      selected={this.isFilterSelected.bind(this)('releaseYear')}
                      onRemove={this.removeFilter.bind(this)}>
           <SelectField
-            {...filterOptions.selectField}
+            {...MovieFilterList.filterOptions.selectField}
             floatingLabelText="Release Year"
             value={filters.releaseYear}
             maxHeight={200}
@@ -231,7 +243,7 @@ class MovieFilters extends Component {
                      values={filters.genres}
                      onRemove={this.removeFilterValue.bind(this)}>
           <SelectField
-            {...filterOptions.selectField}
+            {...MovieFilterList.filterOptions.selectField}
             floatingLabelText="Genres"
             multiple={true}
             value={filters.genres}
@@ -244,7 +256,7 @@ class MovieFilters extends Component {
                      values={filters.languages}
                      onRemove={this.removeFilterValue.bind(this)}>
           <SelectField
-            {...filterOptions.selectField}
+            {...MovieFilterList.filterOptions.selectField}
             floatingLabelText="Languages"
             multiple={true}
             value={filters.languages}
@@ -257,7 +269,7 @@ class MovieFilters extends Component {
                      values={filters.countries}
                      onRemove={this.removeFilterValue.bind(this)}>
           <SelectField
-            {...filterOptions.selectField}
+            {...MovieFilterList.filterOptions.selectField}
             floatingLabelText="Countries"
             multiple={true}
             value={filters.countries}
@@ -277,7 +289,7 @@ class MovieFilters extends Component {
                            removeAward={this.removeAward.bind(this)}
                            selectAward={this.addAward.bind(this)}
                            toggleAward={this.toggleAward.bind(this)}/>
-        <div style={{marginTop: 15, marginBottom: 15, paddingRight: '1rem'}}>
+        <div style={MovieFilterList.styles.applyButton}>
           <RaisedButton label="Apply" primary={true} fullWidth={true}
                         onClick={this.applyFilters.bind(this)}/>
         </div>
@@ -286,4 +298,4 @@ class MovieFilters extends Component {
   }
 }
 
-export default MovieFilters;
+export default MovieFilterList;

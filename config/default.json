@@ -1,6 +1,6 @@
 {
   "mongodb": {
-    "url": "mongodb://root:Superman1@ds141490.mlab.com:41490/mapflix",
+    "url": "mongodb://localhost:27017/mapflix",
     "movieCollection": "movies",
     "peopleCollection": "people",
     "genresCollection": "genres",

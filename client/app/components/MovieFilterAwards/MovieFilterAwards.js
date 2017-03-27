@@ -1,11 +1,11 @@
 import React, {PropTypes, Component} from 'react';
 import MenuItem from 'material-ui/MenuItem';
 import _ from 'lodash';
-import Awards from '../../../constants/Awards';
+import Awards from '../../constants/Awards';
 import {List, ListItem} from 'material-ui/List';
 import Toggle from 'material-ui/Toggle';
 import Checkbox from 'material-ui/Checkbox';
-import MovieAwardIcon from '../../MovieItem/MovieAwardIcon/MovieAwardIcon';
+import MovieAwardIcon from '../MovieAwardIcon/MovieAwardIcon';
 import Avatar from 'material-ui/Avatar';
 import {grey800, yellow700} from 'material-ui/styles/colors';
 import ClearIcon from 'material-ui/svg-icons/content/clear';

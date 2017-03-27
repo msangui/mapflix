@@ -9,8 +9,8 @@ import moment from 'moment';
 import Toggle from 'material-ui/Toggle';
 import {Link} from 'react-router-dom';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
-import MovieAwards from './MovieAwards/MovieAwards';
-import MovieAwardIcon from '../MovieItem/MovieAwardIcon/MovieAwardIcon';
+import MovieAwards from '../MovieAwards/MovieAwards';
+import MovieAwardIcon from '../MovieAwardIcon/MovieAwardIcon';
 import Chip from 'material-ui/Chip';
 import {convertHex} from '../../utils/utils';
 
@@ -55,7 +55,7 @@ class MovieItem extends Component {
   }
 
   render() {
-    const {genres, stars, rating, name, image, cols = 1, rows = 1, releaseDate, runtime, cast = [], languages, awards = []} = this.props;
+    const {_id, genres, stars, rating, name, image, cols = 1, rows = 1, releaseDate, runtime, cast = [], languages, awards = []} = this.props;
     const {more, open} = this.state;
 
     const title = !open ? (
@@ -214,8 +214,9 @@ class MovieItem extends Component {
                               labelStyle={{lineHeight: '12px'}}>
       {
         _.uniqBy(_.uniqBy(awards, 'eventType')
-          .map(award => (
-            <MovieAwardIcon size={30}
+          .map((award, index) => (
+            <MovieAwardIcon key={`movie-award-icon-${_id}-${index}`}
+                            size={30}
                             eventType={award.eventType}
                             color={_.find(awards, {
                               eventType: award.eventType, winner: true

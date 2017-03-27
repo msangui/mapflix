@@ -24,7 +24,6 @@
 
     .movie__front, .movie__back {
       backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
       width: 100%;
       position: absolute;
       top: 0;
@@ -34,6 +33,14 @@
     .movie__front {
       z-index: 2;
       transform: rotateY(0deg);
+      position: relative;
+      height: 100%;
+      img {
+        width: 100%;
+        bottom: 0;
+        position: absolute;
+        left: 0;
+      }
     }
 
     .movie__back {
