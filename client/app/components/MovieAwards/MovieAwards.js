@@ -97,7 +97,7 @@ class MovieAwards extends Component {
                     secondaryText={title}
                     disabled={true}
                     leftAvatar={icon}
-                    secondaryTextLines={1}/>
+                    secondaryTextLines={2}/>
         </Link>
       );
     });

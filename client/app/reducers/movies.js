@@ -14,7 +14,7 @@ const initialState = {
   loadingOptions: false,
   loadingMore: false,
   filters: {
-    first: false
+    rating: 6
   },
   options: {},
   params: {
