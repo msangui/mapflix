@@ -123,6 +123,7 @@ class Movies extends Component {
           docked={false}
           width={300}
           openSecondary={true}
+          disableSwipeToOpen={false}
           open={this.state.drawerOpen}
           onRequestChange={(drawerOpen) => this.setState({drawerOpen})}>
           {filtersElement}

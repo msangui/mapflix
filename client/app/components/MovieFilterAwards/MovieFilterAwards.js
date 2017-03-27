@@ -44,11 +44,10 @@ class MovieFilterAwards extends Component {
     return indexOf(selectedAwards, `${eventType},winner`) !== -1;
   }
 
-  onCheck(eventType, event, isChecked) {
+  onCheck(eventType, event) {
     const {selectAward, removeAward} = this.props;
     const award = this.isWinner(eventType) ? `${eventType},winner` : eventType;
-    return isChecked ? removeAward(award) : selectAward(eventType);
-
+    return this.isSelected(eventType) ? removeAward(award) : selectAward(eventType);
   }
 
   render() {

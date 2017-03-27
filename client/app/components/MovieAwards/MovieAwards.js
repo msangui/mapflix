@@ -111,12 +111,12 @@ class MovieAwards extends Component {
           open={this.state.open}
           onRequestClose={this.closeDialog.bind(this)}
           autoScrollBodyContent={true}>
-          <Paper style={style.paper} zDepth={0}>
+          <Paper className="movie__awards__list" style={style.paper} zDepth={0}>
             <List>
               {take(awardsElement, ceil(awardsElement.length / 2))}
             </List>
           </Paper>
-          <Paper style={style.paper} zDepth={0}>
+          <Paper className="movie__awards__list" style={style.paper} zDepth={0}>
             <List>
               {takeRight(awardsElement, awards.length - ceil(awardsElement.length / 2))}
             </List>
