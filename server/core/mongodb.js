@@ -39,12 +39,16 @@ module.exports = {
       })
     });
   },
-  saveDocument(db, collectionName, document) {
+  saveDocument(db, collectionName, document, retry = false) {
     return new Promise((resolve, reject) => {
       const collection = db.collection(collectionName);
       collection.save(document, (err, res) => {
         if (err) {
-          reject(err);
+          if (retry) {
+            resolve(this.saveDocument(db, collectionName, document, false));
+          } else {
+            reject(err);
+          }
           return;
         }
         resolve(res.result);
