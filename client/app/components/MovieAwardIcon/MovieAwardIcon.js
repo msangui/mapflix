@@ -24,7 +24,7 @@ class MovieAwardIcon extends Component {
           case 'ev0000003':
             return (
               <Oscar color={color}
-                     viewBox="-30 -50 200 500"
+                     viewBox="-30 -80 200 500"
                      style={{width: (15 * size) / 50, height: size}}
                      preserveAspectRatio="xMinYMin meet"/>
             );

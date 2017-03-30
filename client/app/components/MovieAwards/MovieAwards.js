@@ -19,6 +19,12 @@ class MovieAwards extends Component {
     name: PropTypes.string
   };
 
+  static awardSizes = {
+    ev0000123: 30,
+    ev0000003: 40,
+    ev0000292: 40
+  };
+
   constructor() {
     super();
     this.state = {
@@ -55,26 +61,14 @@ class MovieAwards extends Component {
     };
 
     const awardThumbnails = orderBy(awards, ['eventType', 'winner'], ['asc', 'desc'])
-      .filter(award => award.eventType !== 'ev0000123')
       .map((award, index) => (
         <span title={award.name}
               key={`award-${award.eventType}-${kebabCase(award.name)}-${index}`}>
           <MovieAwardIcon color={award.winner ? amber700 : grey800}
-                          size={50}
+                          size={MovieAwards.awardSizes[award.eventType]}
                           eventType={award.eventType} />
         </span>
-      )).concat(
-        orderBy(awards, ['eventType', 'winner'], ['asc', 'desc'])
-          .filter(award => award.eventType === 'ev0000123')
-          .map((award, index) => (
-            <span title={award.name}
-                  key={`award-${award.eventType}-${kebabCase(award.name)}-${index}`}>
-              <MovieAwardIcon color={award.winner ? amber700 : grey800}
-                          size={30}
-                          eventType={award.eventType} />
-        </span>
-        ))
-      );
+      ));
 
     const awardsElement = orderBy(awards, ['eventType', 'winner'], ['asc', 'desc']).map((award, index) => {
       const icon = (

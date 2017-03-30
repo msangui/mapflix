@@ -8,7 +8,7 @@ const movies = require('./movies/routes');
 const people = require('./people/routes');
 
 const cpus = require('os').cpus().length;
-if (cluster.isMaster) {
+if (cluster.isMaster && process.env.NODE_ENV === 'production') {
   for (var i = 0; i < cpus; i++) {
     // Create a worker
     cluster.fork();

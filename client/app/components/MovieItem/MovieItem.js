@@ -2,8 +2,9 @@ import React, {PropTypes, Component} from 'react';
 import {GridTile} from 'material-ui/GridList';
 import StarIcon from 'material-ui/svg-icons/toggle/star';
 import classNames from 'classnames';
-import {grey400, grey200, grey600, grey800, amber700, grey50, yellow500} from 'material-ui/styles/colors';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import {grey400, grey200, grey600, grey800, amber700, grey50, yellow500, white} from 'material-ui/styles/colors';
+import uniqBy from 'lodash/uniqBy';
+import find from 'lodash/find';
 import {List, ListItem} from 'material-ui/List';
 import Toggle from 'material-ui/Toggle';
 import {Link} from 'react-router-dom';
@@ -32,6 +33,53 @@ class MovieItem extends Component {
     stars: PropTypes.array
   };
 
+  static styles = {
+    movieBack: {
+      backgroundColor: grey400
+    },
+    listItem: {
+      paddingTop: 5,
+      paddingBottom: 5,
+      paddingLeft: 10,
+      paddingRight: 10
+    },
+    imdbBadge: {
+      top: 0,
+      right: 5
+    },
+    thumbOff: {
+      backgroundColor: grey600,
+    },
+    trackOff: {
+      backgroundColor: grey200,
+    },
+    thumbSwitched: {
+      backgroundColor: grey600,
+    },
+    trackSwitched: {
+      backgroundColor: grey200,
+    },
+    labelStyle: {
+      color: 'red'
+    },
+    awardBadge: {
+      borderRadius: 10,
+      position: 'absolute',
+      top: 5,
+      left: 3
+    },
+    awardBadgeLabel: {
+      lineHeight: '12px'
+    },
+    ratingBadge: {
+      position: 'absolute',
+      bottom: 5,
+      right: 3,
+      zIndex: 10,
+      color: white
+    }
+  };
+
   constructor() {
     super();
     this.state = {
@@ -54,6 +102,10 @@ class MovieItem extends Component {
     });
   }
 
+  clickLink(event) {
+    event.stopPropagation();
+  }
+
   render() {
     const {_id, genres, stars, rating, name, image, cols = 1, rows = 1, releaseDate, runtime, cast = [], languages, awards = []} = this.props;
     const {more, open} = this.state;
@@ -61,73 +113,51 @@ class MovieItem extends Component {
     const releaseDateObject = new Date(releaseDate || Date.now());
     const releaseDateString = releaseDateObject.toISOString().split('T')[0];
 
-    const title = !open ? (
-      <div className="movie__title">
-        <div className="movie__rating">
-          <StarIcon color={yellow500}/>
-          <span>{rating.value}</span>
-        </div>
-      </div>
-    ) : null;
-
-    const animatedTitle = (
-      <ReactCSSTransitionGroup
-        transitionName="title"
-        transitionEnterTimeout={500}
-        transitionLeaveTimeout={300}>
-        {title}
-      </ReactCSSTransitionGroup>
-    );
-
     const directors = cast
       .filter(person => person.role === 'director');
 
-    const style = {
-      back: {
-        backgroundColor: grey400
-      },
-      listItem: {
-        paddingTop: 5,
-        paddingBottom: 5,
-        paddingLeft: 10,
-        paddingRight: 10
-      },
-      firstListItem: {
-        paddingTop: 0
-      },
-      thumbOff: {
-        backgroundColor: grey600,
-      },
-      trackOff: {
-        backgroundColor: grey200,
-      },
-      thumbSwitched: {
-        backgroundColor: grey600,
-      },
-      trackSwitched: {
-        backgroundColor: grey200,
-      },
-      labelStyle: {
-        color: 'red',
-      },
-    };
-    const primaryList = !more ? (
+    const ratingBadge = (
+      <div className="movie__rating" style={MovieItem.styles.ratingBadge}>
+        <StarIcon color={yellow500}/>
+        <span>{rating.value}</span>
+      </div>
+    );
+
+    const awardBadgeIcons = uniqBy(awards, 'eventType')
+      .map((award, index) => (
+        <MovieAwardIcon
+          key={`movie-award-icon-${_id}-${index}`}
+          size={30}
+          eventType={award.eventType}
+          color={find(awards, {
+            eventType: award.eventType, winner: true
+          }) ? amber700 : grey800} />
+      ))
+
+    const awardBadge = (
+      <Chip style={MovieItem.styles.awardBadge}
+            backgroundColor={convertHex(grey50, 40)}
+            labelStyle={MovieItem.styles.awardBadgeLabel}>
+        {awardBadgeIcons}
+      </Chip>);
+
+    const details = !more ? (
       <List>
         <ListItem
-          innerDivStyle={style.listItem}
+          innerDivStyle={MovieItem.styles.listItem}
           primaryText="Genres"
           secondaryText={
-            genres.map(genre => (
-              <span key={`genre-${genre}`}>
-                <Link to={`/?refresh=true&genres=${genre}`}>{genre}</Link>&nbsp;
-              </span>
-            ))
+            <span>
+              {genres.map(genre => (
+                <Link to={`/?refresh=true&genres=${genre}`} key={`genre-${genre}`}>{genre}&nbsp;</Link>
+              ))}
+            </span>
           }
           secondaryTextLines={2}
           disabled={true}
         />
         <ListItem
-          innerDivStyle={style.listItem}
+          innerDivStyle={MovieItem.styles.listItem}
           primaryText="Stars"
           secondaryText={
             stars.map(star => (
@@ -140,7 +170,7 @@ class MovieItem extends Component {
           disabled={true}
         />
         <ListItem
-          innerDivStyle={style.listItem}
+          innerDivStyle={MovieItem.styles.listItem}
           primaryText="Directed by"
           secondaryText={
             directors.map(director => (
@@ -153,7 +183,7 @@ class MovieItem extends Component {
           disabled={true}
         />
         <ListItem
-          innerDivStyle={style.listItem}
+          innerDivStyle={MovieItem.styles.listItem}
           primaryText="Release date"
           secondaryText={(
             <span key={`release-date-${releaseDateObject.getFullYear()}`}>
@@ -163,19 +193,24 @@ class MovieItem extends Component {
           secondaryTextLines={1}
           disabled={true}
         />
+        <ListItem hoverColor="none" rightAvatar={(
+          <Link to={`https://www.imdb.com/title/${_id}`} target="_blank" style={MovieItem.styles.imdbBadge} onClick={this.clickLink}>
+            <img src="/assets/imdb.png" />
+          </Link>
+        )}>
+        </ListItem>
       </List>
-    ) : null;
-    const secondaryList = more ? (
+    ) : (
       <List>
         <ListItem
-          innerDivStyle={style.listItem}
+          innerDivStyle={MovieItem.styles.listItem}
           primaryText="Runtime"
           secondaryText={displayTime(runtime)}
           secondaryTextLines={1}
           disabled={true}
         />
         <ListItem
-          innerDivStyle={style.listItem}
+          innerDivStyle={MovieItem.styles.listItem}
           primaryText="Languages"
           secondaryText={languages.join(', ')}
           secondaryTextLines={1}
@@ -183,65 +218,41 @@ class MovieItem extends Component {
         />
         <MovieAwards awards={awards} name={name}/>
       </List>
-    ) : null;
+    );
+
+    const detailsToggle = (
+      <Toggle
+        className="movie__toggle"
+        toggled={more}
+        onClick={this.toggleMore.bind(this)}
+        thumbStyle={MovieItem.styles.thumbOff}
+        trackStyle={MovieItem.styles.trackOff}
+        thumbSwitchedStyle={MovieItem.styles.thumbSwitched}
+        trackSwitchedStyle={MovieItem.styles.trackSwitched}
+        labelStyle={MovieItem.styles.labelStyle}
+      />
+    );
 
     const movieDetails = open ? (
       <span>
-        <Toggle
-          className="movie__toggle"
-          toggled={more}
-          onClick={this.toggleMore.bind(this)}
-          thumbStyle={style.thumbOff}
-          trackStyle={style.trackOff}
-          thumbSwitchedStyle={style.thumbSwitched}
-          trackSwitchedStyle={style.trackSwitched}
-          labelStyle={style.labelStyle}
-        />
-        <ReactCSSTransitionGroup
-          transitionName="list"
-          transitionEnterTimeout={200}
-          transitionLeaveTimeout={200}>
-          {primaryList}
-        </ReactCSSTransitionGroup>
-        <ReactCSSTransitionGroup
-          transitionName="list-2"
-          transitionEnterTimeout={200}
-          transitionLeaveTimeout={200}>
-          {secondaryList}
-        </ReactCSSTransitionGroup>
+        {detailsToggle}
+        {details}
       </span>
     ) : null;
-
-    const awardBadge = (<Chip style={{borderRadius: 10, position: 'absolute', top: 5, left: 3}}
-                              backgroundColor={convertHex(grey50, 40)}
-                              labelStyle={{lineHeight: '12px'}}>
-      {
-        _.uniqBy(_.uniqBy(awards, 'eventType')
-          .map((award, index) => (
-            <MovieAwardIcon key={`movie-award-icon-${_id}-${index}`}
-                            size={30}
-                            eventType={award.eventType}
-                            color={_.find(awards, {
-                              eventType: award.eventType, winner: true
-                            }) ? amber700 : grey800} />
-          )))
-      }
-    </Chip>);
 
     return (
       <GridTile className="movie"
                 cols={cols}
-                title={animatedTitle}
                 rows={rows}
                 titleBackground="none"
                 onClick={this.toggle.bind(this)}>
-
         <div className={classNames('movie--flipper', {'movie--active': open})} title={name}>
           <div className="movie__front">
             {awardBadge}
+            {ratingBadge}
             <LazyImage src={image}/>
           </div>
-          <div className="movie__back" style={style.back}>
+          <div className="movie__back" style={MovieItem.styles.movieBack}>
             {movieDetails}
           </div>
         </div>

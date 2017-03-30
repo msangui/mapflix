@@ -3,7 +3,6 @@
   height: 100%;
 
   .movie__rating {
-    text-align: right;
     span {
       font-size: 22px;
       display: inline-block;
@@ -40,6 +39,7 @@
         bottom: 0;
         position: absolute;
         left: 0;
+        cursor: pointer;
       }
     }
 
@@ -47,10 +47,8 @@
       height: 100%;
       width: 100%;
       transform: rotateY(180deg);
-      img {
-        transform: rotateY(180deg);
-        opacity: .4;
-        position: absolute;
+      a {
+        display: inline-block;
       }
     }
 
@@ -66,93 +64,5 @@
     margin-top: 5px;
     margin-left: 5%;
     width: 90%;
-  }
-
-  // animations
-  .title-enter {
-    opacity: 0.01;
-  }
-
-  .title-enter.title-enter-active {
-    opacity: 1;
-    transition: opacity 500ms ease-in;
-  }
-
-  .title-leave {
-    opacity: 1;
-  }
-
-  .title-leave.title-leave-active {
-    opacity: 0.01;
-    transition: opacity 300ms ease-in;
-  }
-
-  .list-enter {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    transform: translate3d(-100%, 0, 0);
-  }
-
-  .list-enter.list-enter-active {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    transform: translate3d(0, 0, 0);
-    transition: transform 200ms ease-in;
-  }
-
-  .list-leave {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    transform: translate3d(0, 0, 0);
-  }
-
-  .list-leave.list-leave-active {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    transform: translate3d(-100%, 0, 0);
-    transition: transform 200ms ease-in;
-  }
-
-  //
-  .list-2-enter {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    transform: translate3d(100%, 0, 0);
-  }
-
-  .list-2-enter.list-2-enter-active {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    transform: translate3d(0, 0, 0);
-    transition: transform 200ms ease-in;
-  }
-
-  .list-2-leave {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    transform: translate3d(0, 0, 0);
-  }
-
-  .list-2-leave.list-2-leave-active {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    transform: translate3d(100%, 0, 0);
-    transition: transform 200ms ease-in;
   }
 }
