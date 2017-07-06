@@ -250,7 +250,7 @@ class MovieItem extends Component {
           <div className="movie__front">
             {awardBadge}
             {ratingBadge}
-            <LazyImage src={image}/>
+            <img src={image}/>
           </div>
           <div className="movie__back" style={MovieItem.styles.movieBack}>
             {movieDetails}
