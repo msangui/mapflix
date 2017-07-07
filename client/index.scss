@@ -8,3 +8,10 @@
 @import 'app/components/MovieFilter/MovieFilter';
 @import 'app/components/MovieFilterAwards/MovieFilterAwards';
 @import 'app/components/MovieAwards/MovieAwards';
+
+@import '~flexboxgrid-sass/flexboxgrid';
+
+.col-lg-1-5 {
+  @include flex-basis(100% / 12 * 1.2);
+  max-width: 100% / 12 * 1.2;
+}

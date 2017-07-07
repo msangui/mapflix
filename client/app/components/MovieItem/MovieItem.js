@@ -241,7 +241,7 @@ class MovieItem extends Component {
     ) : null;
 
     return (
-      <div className="movie col-xs-6 col-md-2 col-lg-1" onClick={this.toggle.bind(this)}>
+      <div className="movie col-xs-6 col-md-2 col-lg-1 col-lg-1-5" onClick={this.toggle.bind(this)}>
         <div className={classNames('movie--flipper', {'movie--active': open})} title={name}>
           <div className="movie__front">
             {awardBadge}
