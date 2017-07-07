@@ -38,14 +38,12 @@ class MovieList extends Component {
                  selected={index === selectedTileIndex}
                  selectTile={this.selectTile.bind(this, index)}/>
     ));
-    const cols = round((windowWidth / 188));
 
     return (
-      <GridList
-        className="movies--list"
-        cellHeight={cellHeight} cols={cols}>
+      <div
+        className="movies--list row">
         {movieList}
-      </GridList>
+      </div>
     );
   }
 }

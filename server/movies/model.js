@@ -27,7 +27,7 @@ const defaultProjection = {
 const queryMovies = (query = {}, options) => {
   return db.then(db => {
 
-    const limit = _.toNumber(options.limit) || 50;
+    const limit = _.toNumber(options.limit) || 60;
     const skip = (options.page && _.toNumber(options.page) > 0 ) ? limit * (_.toNumber(options.page) - 1) : 0;
     const sortBy = options.sortBy || 'releaseDate';
     const sortDirection = options.sortDirection === 'asc' ? 1 : -1;

@@ -11,6 +11,7 @@ import createHistory from 'history/createBrowserHistory'
 const history = createHistory();
 const store = configureStore({}, history);
 import './index.scss';
+import 'flexboxgrid-sass/flexboxgrid.scss';
 
 render(
   <Provider store={store}>

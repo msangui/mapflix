@@ -19,7 +19,7 @@ const initialState = {
   options: {},
   params: {
     page: 1,
-    limit: 50
+    limit: 60
   },
   hasMore: true
 };

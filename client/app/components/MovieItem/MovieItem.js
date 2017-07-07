@@ -241,22 +241,18 @@ class MovieItem extends Component {
     ) : null;
 
     return (
-      <GridTile className="movie"
-                cols={cols}
-                rows={rows}
-                titleBackground="none"
-                onClick={this.toggle.bind(this)}>
+      <div className="movie col-xs-6 col-md-2 col-lg-1" onClick={this.toggle.bind(this)}>
         <div className={classNames('movie--flipper', {'movie--active': open})} title={name}>
           <div className="movie__front">
             {awardBadge}
             {ratingBadge}
-            <img src={image}/>
+            <LazyImage src={image}/>
           </div>
           <div className="movie__back" style={MovieItem.styles.movieBack}>
             {movieDetails}
           </div>
         </div>
-      </GridTile>
+      </div>
     );
   }
 }
