@@ -84,7 +84,8 @@ class MovieItem extends Component {
     super();
     this.state = {
       more: false,
-      open: false
+      open: false,
+      show: false
     };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
@@ -102,13 +103,19 @@ class MovieItem extends Component {
     });
   }
 
+  onLoad() {
+    this.setState({
+      show: true
+    });
+  }
+
   clickLink(event) {
     event.stopPropagation();
   }
 
   render() {
-    const {_id, genres, stars, rating, name, image, cols = 1, rows = 1, releaseDate, runtime, cast = [], languages, awards = []} = this.props;
-    const {more, open} = this.state;
+    const {_id, genres, stars, rating, name, image, releaseDate, runtime, cast = [], languages, awards = []} = this.props;
+    const {more, open, show} = this.state;
 
     const releaseDateObject = new Date(releaseDate || Date.now());
     const releaseDateString = releaseDateObject.toISOString().split('T')[0];
@@ -241,12 +248,12 @@ class MovieItem extends Component {
     ) : null;
 
     return (
-      <div className="movie col-xs-6 col-md-2 col-lg-1 col-lg-1-5" onClick={this.toggle.bind(this)}>
+      <div className={classNames('movie col-xs-6 col-md-2 col-lg-1 col-lg-1-5', {'movie--loaded': show})} onClick={this.toggle.bind(this)}>
         <div className={classNames('movie--flipper', {'movie--active': open})} title={name}>
           <div className="movie__front">
             {awardBadge}
             {ratingBadge}
-            <LazyImage src={image}/>
+            <LazyImage src={image} onLoad={this.onLoad.bind(this)}/>
           </div>
           <div className="movie__back" style={MovieItem.styles.movieBack}>
             {movieDetails}

@@ -1,6 +1,11 @@
 .movie {
   perspective: 1000px;
   margin: 5px 0;
+  display: none;
+
+  &.movie--loaded {
+    display: block;
+  }
 
   .movie__rating {
     span {

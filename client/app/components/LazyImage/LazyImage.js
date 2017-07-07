@@ -5,6 +5,7 @@ import {isElementInViewport} from '../../utils/utils';
 
 class LazyImage extends Component {
   static propTypes = {
+    onLoad: PropTypes.func,
     src: PropTypes.string
   };
 
@@ -41,7 +42,7 @@ class LazyImage extends Component {
 
   render() {
     return this.state.visible ? (
-      <img src={this.props.src}/>
+      <img src={this.props.src} onLoad={this.props.onLoad}/>
     ) : (
       <div />
     );
